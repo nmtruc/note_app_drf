@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { ReactComponent as ArrowLeft } from '../assets/arrow-left.svg'
+import Cookies from 'js-cookie'
 
 const NotePage = ({ match, history }) => {
     let noteId = match.params.id
     let [note, setNote] = useState(null)
+    let csrftoken = Cookies.get('csrftoken');
 
     useEffect(() => {
         getNote()
@@ -20,24 +21,22 @@ const NotePage = ({ match, history }) => {
         fetch(`/api/notes/${noteId}/`, {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             body: JSON.stringify(note)
         })
+        history.push('/')
     }
 
     let deleteNote = async () => {
         fetch(`/api/notes/${noteId}/`, {
             method: "DELETE",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             }
         })
-        history.push('/')
-    }
-
-    let handleSubmit = () => {
-        updateNote()
         history.push('/')
     }
 
@@ -45,7 +44,7 @@ const NotePage = ({ match, history }) => {
         <div className="note">
             <div className="note-header">
                 <h3>
-                    <ArrowLeft onClick={handleSubmit} />
+                    <ArrowLeft onClick={updateNote} />
                 </h3>
                 <button onClick={deleteNote}>Delete</button>
             </div>
