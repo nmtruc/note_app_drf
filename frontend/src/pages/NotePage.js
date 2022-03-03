@@ -28,6 +28,7 @@ const NotePage = ({ match, history }) => {
             },
             body: JSON.stringify(note)
         })
+        history.push('/')
     }
 
     let updateNote = async () => {
@@ -39,6 +40,7 @@ const NotePage = ({ match, history }) => {
             },
             body: JSON.stringify(note)
         })
+        history.push('/')
     }
 
     let deleteNote = async () => {
@@ -60,7 +62,6 @@ const NotePage = ({ match, history }) => {
         } else if (noteId === 'new' && note !== null) {
             createNote()
         }
-        history.push('/')
     }
 
     let handleChange = (value) => {
